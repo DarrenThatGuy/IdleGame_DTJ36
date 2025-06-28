@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj7n61gu11lso"]
+
+[ext_resource type="PackedScene" uid="uid://dk2poboa0py2e" path="res://Scenes/boss_core.tscn" id="1_thtli"]
+[ext_resource type="PackedScene" uid="uid://b6nparti4auej" path="res://base_character.tscn" id="2_2hb0m"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="BossCore" parent="." instance=ExtResource("1_thtli")]
+regen_amount = 50.0
+regen_speed = 4.0
+
+[node name="TankCharacter" parent="." instance=ExtResource("2_2hb0m")]
+attack_speed = 3.0
+
+[node name="DPSCharacter1" parent="." instance=ExtResource("2_2hb0m")]
+attack_damage = 30.0
+attack_speed = 5.0
+
+[node name="DPSCharacter2" parent="." instance=ExtResource("2_2hb0m")]
+attack_damage = 4.0
+attack_speed = 0.4
+
+[node name="HealerCharacter" parent="." instance=ExtResource("2_2hb0m")]
+attack_damage = 3.0
+attack_speed = 2.0
+
+[connection signal="deal_damage" from="TankCharacter" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="deal_damage" from="DPSCharacter1" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="deal_damage" from="DPSCharacter2" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="deal_damage" from="HealerCharacter" to="BossCore" method="_on_base_character_deal_damage"]

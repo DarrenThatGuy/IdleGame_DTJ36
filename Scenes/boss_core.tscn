@@ -6,9 +6,10 @@
 position = Vector2(563, 114)
 script = ExtResource("1_x788d")
 max_health = 1000.0
-regen_amount = 10.0
+regen_amount = 5.0
 regen_timer = NodePath("RegenTimer")
 
 [node name="RegenTimer" type="Timer" parent="."]
+autostart = true
 
 [connection signal="timeout" from="RegenTimer" to="." method="_on_regen_timer_timeout"]
