@@ -1,6 +1,7 @@
 class_name Character extends Node2D
 
 @export var attack_damage: float
+const base_damage = 1
 @export var attack_damage_mult: float
 @export var attack_speed: float
 

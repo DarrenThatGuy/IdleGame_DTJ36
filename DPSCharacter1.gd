@@ -3,7 +3,7 @@ class_name DPSCharacter1 extends Character
 @export var bleed_active = false
 @export var bleed_timer : Timer
 @export var bleed_time : float = 20
-@export var bleed_amount : float = .95
+@export var bleed_amount : float = .995
 
 signal bleed_boss(bleed_multiplier)
 

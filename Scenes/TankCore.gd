@@ -4,7 +4,7 @@ signal toggle_shred(time, shred_amount)
 
 @export  var shred_active = false
 @export var shread_timer : Timer
-@export var shred_time : float = 2
+@export var shred_time : float = 1
 @export var shred_amount : float = 1.05
 
 # Called when the node enters the scene tree for the first time.
@@ -26,3 +26,8 @@ func shred():
 
 func _on_shred_timer_timeout():
 	shred()
+
+
+func _on_tank_upgade_pressed():
+	attack_damage_mult += .5
+	print(attack_damage_mult)

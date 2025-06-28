@@ -24,7 +24,7 @@ regen_speed = 1.0
 script = ExtResource("2_oclct")
 shred_active = false
 shread_timer = NodePath("ShredTimer")
-shred_time = 2.0
+shred_time = 1.0
 shred_amount = 1.05
 attack_damage = 1.0
 attack_damage_mult = 1.5
@@ -32,30 +32,45 @@ attack_speed = 1.0
 
 [node name="ShredTimer" type="Timer" parent="TankCharacter"]
 wait_time = 10.0
-autostart = true
 
-[node name="DPSCharacter1" parent="." instance=ExtResource("2_2hb0m")]
+[node name="DPSCharacter1" parent="." node_paths=PackedStringArray("bleed_timer") instance=ExtResource("2_2hb0m")]
 script = ExtResource("5_m2ijw")
 bleed_active = false
+bleed_timer = NodePath("BleedTimer")
 bleed_time = 20.0
-bleed_amount = 0.95
+bleed_amount = 0.995
 attack_damage = 1.0
 attack_damage_mult = 3.5
 attack_speed = 1.0
 
 [node name="BleedTimer" type="Timer" parent="DPSCharacter1"]
+wait_time = 20.0
 
-[node name="DPSCharacter2" parent="." instance=ExtResource("2_2hb0m")]
+[node name="DPSCharacter2" parent="." node_paths=PackedStringArray("deadeye_timer") instance=ExtResource("2_2hb0m")]
 script = ExtResource("6_rsgky")
+deadeye_active = false
+deadeye_timer = NodePath("DeadeyeTimer")
+deadeye_cooldown = 20.0
+deadeye_duration = 1.0
 attack_damage = 1.0
 attack_damage_mult = 2.5
 attack_speed = 1.0
 
-[node name="HealerCharacter" parent="." instance=ExtResource("2_2hb0m")]
+[node name="DeadeyeTimer" type="Timer" parent="DPSCharacter2"]
+wait_time = 20.0
+
+[node name="HealerCharacter" parent="." node_paths=PackedStringArray("embolden_timer") instance=ExtResource("2_2hb0m")]
 script = ExtResource("7_wgiaj")
+embolden_active = false
+embolden_timer = NodePath("EmboldenTimer")
+embolden_time = 1.0
+embolden_amount = 0.05
 attack_damage = 1.0
 attack_damage_mult = 1.7
 attack_speed = 1.0
+
+[node name="EmboldenTimer" type="Timer" parent="HealerCharacter"]
+wait_time = 10.0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -85,6 +100,15 @@ grow_horizontal = 2
 script = ExtResource("4_mdpm6")
 BossNode = NodePath("../../../BossCore")
 
+[node name="TankUpgade" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 182.0
+offset_right = 140.0
+offset_bottom = 268.0
+text = "Upgrade
+Tank"
+
 [connection signal="deal_damage" from="TankCharacter" to="BossCore" method="_on_base_character_deal_damage"]
 [connection signal="toggle_shred" from="TankCharacter" to="BossCore" method="_on_tank_character_toggle_shred"]
 [connection signal="timeout" from="TankCharacter/ShredTimer" to="TankCharacter" method="_on_shred_timer_timeout"]
@@ -92,4 +116,8 @@ BossNode = NodePath("../../../BossCore")
 [connection signal="deal_damage" from="DPSCharacter1" to="BossCore" method="_on_base_character_deal_damage"]
 [connection signal="timeout" from="DPSCharacter1/BleedTimer" to="DPSCharacter1" method="_on_bleed_timer_timeout"]
 [connection signal="deal_damage" from="DPSCharacter2" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="timeout" from="DPSCharacter2/DeadeyeTimer" to="DPSCharacter2" method="_on_deadeye_timer_timeout"]
 [connection signal="deal_damage" from="HealerCharacter" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="embolden_signal" from="HealerCharacter" to="BossCore" method="_on_healer_character_toggle_embolden"]
+[connection signal="timeout" from="HealerCharacter/EmboldenTimer" to="HealerCharacter" method="_on_embolden_timer_timeout"]
+[connection signal="pressed" from="UI/TankUpgade" to="TankCharacter" method="_on_tank_upgade_pressed"]
