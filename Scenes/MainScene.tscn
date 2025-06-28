@@ -1,6 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://dj7n61gu11lso"]
+[gd_scene load_steps=11 format=3 uid="uid://dj7n61gu11lso"]
 
-[ext_resource type="Script" path="res://Scenes/UpgradeHandler.gd" id="1_2qo2p"]
+[ext_resource type="Script" path="res://Scenes/MainScene.gd" id="1_4ddmm"]
 [ext_resource type="PackedScene" uid="uid://dk2poboa0py2e" path="res://Scenes/boss_core.tscn" id="1_thtli"]
 [ext_resource type="PackedScene" uid="uid://b6nparti4auej" path="res://base_character.tscn" id="2_2hb0m"]
 [ext_resource type="Script" path="res://Scenes/TankCore.gd" id="2_oclct"]
@@ -9,12 +9,10 @@
 [ext_resource type="Script" path="res://DPSCharacter1.gd" id="5_m2ijw"]
 [ext_resource type="Script" path="res://DPSCharacter2.gd" id="6_rsgky"]
 [ext_resource type="Script" path="res://HealerCharacter.gd" id="7_wgiaj"]
+[ext_resource type="Script" path="res://Scenes/EXPAmount.gd" id="10_06ukv"]
 
 [node name="Node2D" type="Node2D"]
-
-[node name="UpgradeHandler" type="Node2D" parent="."]
-position = Vector2(49, 184)
-script = ExtResource("1_2qo2p")
+script = ExtResource("1_4ddmm")
 
 [node name="BossCore" parent="." instance=ExtResource("1_thtli")]
 regen_amount = 10.0
@@ -109,6 +107,40 @@ offset_bottom = 268.0
 text = "Upgrade
 Tank"
 
+[node name="DPS1Upgrade" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 146.0
+offset_top = 183.0
+offset_right = 240.0
+offset_bottom = 269.0
+text = "Upgrade
+DPS1"
+
+[node name="DPS2Upgrade" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 275.0
+offset_right = 140.0
+offset_bottom = 361.0
+text = "Upgrade
+DPS2"
+
+[node name="HealerUpgrade" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 145.0
+offset_top = 274.0
+offset_right = 239.0
+offset_bottom = 360.0
+text = "Upgrade
+Healer"
+
+[node name="EXPAmount" type="Label" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("10_06ukv")
+
+[connection signal="get_exp" from="BossCore" to="." method="_on_boss_core_get_exp"]
 [connection signal="deal_damage" from="TankCharacter" to="BossCore" method="_on_base_character_deal_damage"]
 [connection signal="toggle_shred" from="TankCharacter" to="BossCore" method="_on_tank_character_toggle_shred"]
 [connection signal="timeout" from="TankCharacter/ShredTimer" to="TankCharacter" method="_on_shred_timer_timeout"]
@@ -121,3 +153,6 @@ Tank"
 [connection signal="embolden_signal" from="HealerCharacter" to="BossCore" method="_on_healer_character_toggle_embolden"]
 [connection signal="timeout" from="HealerCharacter/EmboldenTimer" to="HealerCharacter" method="_on_embolden_timer_timeout"]
 [connection signal="pressed" from="UI/TankUpgade" to="TankCharacter" method="_on_tank_upgade_pressed"]
+[connection signal="pressed" from="UI/DPS1Upgrade" to="DPSCharacter1" method="_on_dps_1_upgrade_pressed"]
+[connection signal="pressed" from="UI/DPS2Upgrade" to="DPSCharacter2" method="_on_dps_2_upgrade_pressed"]
+[connection signal="pressed" from="UI/HealerUpgrade" to="HealerCharacter" method="_on_healer_upgrade_pressed"]

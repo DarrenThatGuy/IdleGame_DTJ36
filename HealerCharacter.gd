@@ -28,3 +28,7 @@ func embolden():
 
 func _on_embolden_timer_timeout():
 	embolden()
+
+
+func _on_healer_upgrade_pressed():
+	attack_damage_mult += .6

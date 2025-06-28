@@ -1,13 +1,14 @@
 class_name Boss extends Node2D
+const base_defense: float = 1
 
-@export var max_health: float
 var health: float
+@export var max_health: float
 @export var regen_amount: float
 @export var regen_speed: float
-const base_defense: float = 1
 @export var defense_value : float = 1
-
 @export var regen_timer: Timer
+
+signal get_exp(amount)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	health = max_health
@@ -35,6 +36,8 @@ func _on_regen_timer_timeout():
 
 func _on_base_character_deal_damage(damage):
 	health -= damage * defense_value
+	get_exp.emit(damage)
+	
 
 
 

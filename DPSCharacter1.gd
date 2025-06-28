@@ -25,3 +25,7 @@ func _on_attack_timer_timeout():
 
 func _on_bleed_timer_timeout():
 	bleed_boss.emit(bleed_amount)
+
+
+func _on_dps_1_upgrade_pressed():
+	attack_damage_mult += .6

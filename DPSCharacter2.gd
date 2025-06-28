@@ -26,3 +26,7 @@ func _on_deadeye_timer_timeout():
 	await get_tree().create_timer(deadeye_duration).timeout
 	attack_damage = 1
 	print("Deadeye Ended")
+
+
+func _on_dps_2_upgrade_pressed():
+	attack_damage_mult += .8
