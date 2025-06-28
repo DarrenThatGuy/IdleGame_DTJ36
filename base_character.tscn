@@ -1,11 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://b6nparti4auej"]
 
-[ext_resource type="Script" path="res://Scripts/Character.gd" id="1_1xioy"]
+[ext_resource type="Script" path="res://Scripts/Character.gd" id="1_da747"]
 
 [node name="BaseCharacter" type="Node2D" node_paths=PackedStringArray("attack_timer")]
-script = ExtResource("1_1xioy")
-attack_damage = 6.0
-attack_speed = 1.6
+script = ExtResource("1_da747")
 attack_timer = NodePath("AttackTimer")
 
 [node name="AttackTimer" type="Timer" parent="."]

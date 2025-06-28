@@ -4,8 +4,12 @@ class_name Boss extends Node2D
 var health: float
 @export var regen_amount: float
 @export var regen_speed: float
+const base_defense: float = 1
+@export var defense_value : float = 1
 
 @export var regen_timer: Timer
+
+@export var shredded: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	health = max_health
@@ -14,11 +18,12 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if health <= 0:
+		level_up()
 
 func level_up():
 	max_health *= 2
-	regen_amount = round(regen_amount * 1.5)
+	regen_amount = round(regen_amount * 2)
 	health = max_health
 
 
@@ -28,10 +33,21 @@ func _on_regen_timer_timeout():
 			health = max_health
 		else:	
 			health += regen_amount
-	print(health)
 
 
 func _on_base_character_deal_damage(damage):
-	health -= damage
-	print(health)
+	health -= damage * defense_value
+	print(defense_value)
 
+
+
+func _on_tank_character_toggle_shred(shred_time, shred_amount):
+	defense_value = shred_amount
+	print("Shred ON")
+	await get_tree().create_timer(shred_time).timeout
+	defense_value = base_defense
+	print("Shred OFF")
+
+
+func _on_dps_character_1_bleed_boss(bleed_multiplier):
+	health *= bleed_multiplier

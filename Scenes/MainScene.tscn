@@ -1,30 +1,95 @@
-[gd_scene load_steps=3 format=3 uid="uid://dj7n61gu11lso"]
+[gd_scene load_steps=10 format=3 uid="uid://dj7n61gu11lso"]
 
+[ext_resource type="Script" path="res://Scenes/UpgradeHandler.gd" id="1_2qo2p"]
 [ext_resource type="PackedScene" uid="uid://dk2poboa0py2e" path="res://Scenes/boss_core.tscn" id="1_thtli"]
 [ext_resource type="PackedScene" uid="uid://b6nparti4auej" path="res://base_character.tscn" id="2_2hb0m"]
+[ext_resource type="Script" path="res://Scenes/TankCore.gd" id="2_oclct"]
+[ext_resource type="Script" path="res://Scenes/BossHealthBar.gd" id="3_wgmwa"]
+[ext_resource type="Script" path="res://Scenes/BossHealthLabel.gd" id="4_mdpm6"]
+[ext_resource type="Script" path="res://DPSCharacter1.gd" id="5_m2ijw"]
+[ext_resource type="Script" path="res://DPSCharacter2.gd" id="6_rsgky"]
+[ext_resource type="Script" path="res://HealerCharacter.gd" id="7_wgiaj"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="BossCore" parent="." instance=ExtResource("1_thtli")]
-regen_amount = 50.0
-regen_speed = 4.0
+[node name="UpgradeHandler" type="Node2D" parent="."]
+position = Vector2(49, 184)
+script = ExtResource("1_2qo2p")
 
-[node name="TankCharacter" parent="." instance=ExtResource("2_2hb0m")]
-attack_speed = 3.0
+[node name="BossCore" parent="." instance=ExtResource("1_thtli")]
+regen_amount = 10.0
+regen_speed = 1.0
+
+[node name="TankCharacter" parent="." node_paths=PackedStringArray("shread_timer") instance=ExtResource("2_2hb0m")]
+script = ExtResource("2_oclct")
+shred_active = false
+shread_timer = NodePath("ShredTimer")
+shred_time = 2.0
+shred_amount = 1.05
+attack_damage = 1.0
+attack_damage_mult = 1.5
+attack_speed = 1.0
+
+[node name="ShredTimer" type="Timer" parent="TankCharacter"]
+wait_time = 10.0
+autostart = true
 
 [node name="DPSCharacter1" parent="." instance=ExtResource("2_2hb0m")]
-attack_damage = 30.0
-attack_speed = 5.0
+script = ExtResource("5_m2ijw")
+bleed_active = false
+bleed_time = 20.0
+bleed_amount = 0.95
+attack_damage = 1.0
+attack_damage_mult = 3.5
+attack_speed = 1.0
+
+[node name="BleedTimer" type="Timer" parent="DPSCharacter1"]
 
 [node name="DPSCharacter2" parent="." instance=ExtResource("2_2hb0m")]
-attack_damage = 4.0
-attack_speed = 0.4
+script = ExtResource("6_rsgky")
+attack_damage = 1.0
+attack_damage_mult = 2.5
+attack_speed = 1.0
 
 [node name="HealerCharacter" parent="." instance=ExtResource("2_2hb0m")]
-attack_damage = 3.0
-attack_speed = 2.0
+script = ExtResource("7_wgiaj")
+attack_damage = 1.0
+attack_damage_mult = 1.7
+attack_speed = 1.0
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="BossHealthBar" type="ProgressBar" parent="UI" node_paths=PackedStringArray("BossNode")]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+show_percentage = false
+script = ExtResource("3_wgmwa")
+BossNode = NodePath("../../BossCore")
+
+[node name="Label" type="Label" parent="UI/BossHealthBar" node_paths=PackedStringArray("BossNode")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+script = ExtResource("4_mdpm6")
+BossNode = NodePath("../../../BossCore")
 
 [connection signal="deal_damage" from="TankCharacter" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="toggle_shred" from="TankCharacter" to="BossCore" method="_on_tank_character_toggle_shred"]
+[connection signal="timeout" from="TankCharacter/ShredTimer" to="TankCharacter" method="_on_shred_timer_timeout"]
+[connection signal="bleed_boss" from="DPSCharacter1" to="BossCore" method="_on_dps_character_1_bleed_boss"]
 [connection signal="deal_damage" from="DPSCharacter1" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="timeout" from="DPSCharacter1/BleedTimer" to="DPSCharacter1" method="_on_bleed_timer_timeout"]
 [connection signal="deal_damage" from="DPSCharacter2" to="BossCore" method="_on_base_character_deal_damage"]
 [connection signal="deal_damage" from="HealerCharacter" to="BossCore" method="_on_base_character_deal_damage"]
