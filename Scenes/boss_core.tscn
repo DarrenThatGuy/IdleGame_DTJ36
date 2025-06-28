@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk2poboa0py2e"]
+
+[ext_resource type="Script" path="res://Scripts/BossCore.gd" id="1_x788d"]
+
+[node name="BossCore" type="Node2D" node_paths=PackedStringArray("regen_timer")]
+position = Vector2(563, 114)
+script = ExtResource("1_x788d")
+max_health = 1000.0
+regen_amount = 10.0
+regen_timer = NodePath("RegenTimer")
+
+[node name="RegenTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="RegenTimer" to="." method="_on_regen_timer_timeout"]
