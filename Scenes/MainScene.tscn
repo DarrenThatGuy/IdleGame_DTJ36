@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dj7n61gu11lso"]
+[gd_scene load_steps=12 format=3 uid="uid://dj7n61gu11lso"]
 
 [ext_resource type="Script" path="res://Scenes/MainScene.gd" id="1_4ddmm"]
 [ext_resource type="PackedScene" uid="uid://dk2poboa0py2e" path="res://Scenes/boss_core.tscn" id="1_thtli"]
@@ -10,64 +10,73 @@
 [ext_resource type="Script" path="res://DPSCharacter2.gd" id="6_rsgky"]
 [ext_resource type="Script" path="res://HealerCharacter.gd" id="7_wgiaj"]
 [ext_resource type="Script" path="res://Scenes/EXPAmount.gd" id="10_06ukv"]
+[ext_resource type="Script" path="res://Scenes/DamageUpgradeButton.gd" id="10_hscyl"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_4ddmm")
 
 [node name="BossCore" parent="." instance=ExtResource("1_thtli")]
-regen_amount = 10.0
-regen_speed = 1.0
+regen_amount = 200.0
+regen_speed = 2.0
 
-[node name="TankCharacter" parent="." node_paths=PackedStringArray("shread_timer") instance=ExtResource("2_2hb0m")]
+[node name="Knight" parent="." node_paths=PackedStringArray("shread_timer", "game_head") instance=ExtResource("2_2hb0m")]
 script = ExtResource("2_oclct")
 shred_active = false
 shread_timer = NodePath("ShredTimer")
 shred_time = 1.0
 shred_amount = 1.05
-attack_damage = 1.0
+game_head = NodePath("..")
+attack_damage = 6.0
 attack_damage_mult = 1.5
+multiplier_upgrade = 0.5
 attack_speed = 1.0
 
-[node name="ShredTimer" type="Timer" parent="TankCharacter"]
+[node name="ShredTimer" type="Timer" parent="Knight"]
 wait_time = 10.0
 
-[node name="DPSCharacter1" parent="." node_paths=PackedStringArray("bleed_timer") instance=ExtResource("2_2hb0m")]
+[node name="Rogue" parent="." node_paths=PackedStringArray("bleed_timer", "game_head") instance=ExtResource("2_2hb0m")]
 script = ExtResource("5_m2ijw")
 bleed_active = false
 bleed_timer = NodePath("BleedTimer")
 bleed_time = 20.0
 bleed_amount = 0.995
-attack_damage = 1.0
+game_head = NodePath("..")
+attack_damage = 6.0
 attack_damage_mult = 3.5
-attack_speed = 1.0
+multiplier_upgrade = 0.6
+attack_speed = 0.7
 
-[node name="BleedTimer" type="Timer" parent="DPSCharacter1"]
+[node name="BleedTimer" type="Timer" parent="Rogue"]
 wait_time = 20.0
 
-[node name="DPSCharacter2" parent="." node_paths=PackedStringArray("deadeye_timer") instance=ExtResource("2_2hb0m")]
+[node name="Sharpshooter" parent="." node_paths=PackedStringArray("deadeye_timer", "game_head") instance=ExtResource("2_2hb0m")]
 script = ExtResource("6_rsgky")
 deadeye_active = false
 deadeye_timer = NodePath("DeadeyeTimer")
 deadeye_cooldown = 20.0
 deadeye_duration = 1.0
-attack_damage = 1.0
+game_head = NodePath("..")
+attack_damage = 6.0
 attack_damage_mult = 2.5
-attack_speed = 1.0
+multiplier_upgrade = 0.8
+attack_speed = 0.8
 
-[node name="DeadeyeTimer" type="Timer" parent="DPSCharacter2"]
+[node name="DeadeyeTimer" type="Timer" parent="Sharpshooter"]
 wait_time = 20.0
 
-[node name="HealerCharacter" parent="." node_paths=PackedStringArray("embolden_timer") instance=ExtResource("2_2hb0m")]
+[node name="Cleric" parent="." node_paths=PackedStringArray("embolden_timer", "game_head") instance=ExtResource("2_2hb0m")]
 script = ExtResource("7_wgiaj")
 embolden_active = false
 embolden_timer = NodePath("EmboldenTimer")
 embolden_time = 1.0
 embolden_amount = 0.05
-attack_damage = 1.0
+game_head = NodePath("..")
+attack_damage = 3.0
 attack_damage_mult = 1.7
-attack_speed = 1.0
+multiplier_upgrade = 0.6
+attack_speed = 0.9
 
-[node name="EmboldenTimer" type="Timer" parent="HealerCharacter"]
+[node name="EmboldenTimer" type="Timer" parent="Cleric"]
 wait_time = 10.0
 
 [node name="UI" type="Control" parent="."]
@@ -98,41 +107,49 @@ grow_horizontal = 2
 script = ExtResource("4_mdpm6")
 BossNode = NodePath("../../../BossCore")
 
-[node name="TankUpgade" type="Button" parent="UI"]
+[node name="TankUpgade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 46.0
-offset_top = 182.0
-offset_right = 140.0
-offset_bottom = 268.0
+offset_left = 40.0
+offset_top = 64.0
+offset_right = 134.0
+offset_bottom = 150.0
 text = "Upgrade
 Tank"
+script = ExtResource("10_hscyl")
+character_to_upgrade = NodePath("../../Knight")
 
-[node name="DPS1Upgrade" type="Button" parent="UI"]
+[node name="DPS1Upgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 146.0
-offset_top = 183.0
-offset_right = 240.0
-offset_bottom = 269.0
+offset_left = 40.0
+offset_top = 160.0
+offset_right = 134.0
+offset_bottom = 246.0
 text = "Upgrade
 DPS1"
+script = ExtResource("10_hscyl")
+character_to_upgrade = NodePath("../../Rogue")
 
-[node name="DPS2Upgrade" type="Button" parent="UI"]
+[node name="DPS2Upgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 46.0
-offset_top = 275.0
-offset_right = 140.0
-offset_bottom = 361.0
+offset_left = 40.0
+offset_top = 256.0
+offset_right = 134.0
+offset_bottom = 342.0
 text = "Upgrade
 DPS2"
+script = ExtResource("10_hscyl")
+character_to_upgrade = NodePath("../../Sharpshooter")
 
-[node name="HealerUpgrade" type="Button" parent="UI"]
+[node name="HealerUpgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 145.0
-offset_top = 274.0
-offset_right = 239.0
-offset_bottom = 360.0
+offset_left = 40.0
+offset_top = 352.0
+offset_right = 134.0
+offset_bottom = 438.0
 text = "Upgrade
 Healer"
+script = ExtResource("10_hscyl")
+character_to_upgrade = NodePath("../../Cleric")
 
 [node name="EXPAmount" type="Label" parent="UI"]
 layout_mode = 0
@@ -141,18 +158,18 @@ offset_bottom = 23.0
 script = ExtResource("10_06ukv")
 
 [connection signal="get_exp" from="BossCore" to="." method="_on_boss_core_get_exp"]
-[connection signal="deal_damage" from="TankCharacter" to="BossCore" method="_on_base_character_deal_damage"]
-[connection signal="toggle_shred" from="TankCharacter" to="BossCore" method="_on_tank_character_toggle_shred"]
-[connection signal="timeout" from="TankCharacter/ShredTimer" to="TankCharacter" method="_on_shred_timer_timeout"]
-[connection signal="bleed_boss" from="DPSCharacter1" to="BossCore" method="_on_dps_character_1_bleed_boss"]
-[connection signal="deal_damage" from="DPSCharacter1" to="BossCore" method="_on_base_character_deal_damage"]
-[connection signal="timeout" from="DPSCharacter1/BleedTimer" to="DPSCharacter1" method="_on_bleed_timer_timeout"]
-[connection signal="deal_damage" from="DPSCharacter2" to="BossCore" method="_on_base_character_deal_damage"]
-[connection signal="timeout" from="DPSCharacter2/DeadeyeTimer" to="DPSCharacter2" method="_on_deadeye_timer_timeout"]
-[connection signal="deal_damage" from="HealerCharacter" to="BossCore" method="_on_base_character_deal_damage"]
-[connection signal="embolden_signal" from="HealerCharacter" to="BossCore" method="_on_healer_character_toggle_embolden"]
-[connection signal="timeout" from="HealerCharacter/EmboldenTimer" to="HealerCharacter" method="_on_embolden_timer_timeout"]
-[connection signal="pressed" from="UI/TankUpgade" to="TankCharacter" method="_on_tank_upgade_pressed"]
-[connection signal="pressed" from="UI/DPS1Upgrade" to="DPSCharacter1" method="_on_dps_1_upgrade_pressed"]
-[connection signal="pressed" from="UI/DPS2Upgrade" to="DPSCharacter2" method="_on_dps_2_upgrade_pressed"]
-[connection signal="pressed" from="UI/HealerUpgrade" to="HealerCharacter" method="_on_healer_upgrade_pressed"]
+[connection signal="deal_damage" from="Knight" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="toggle_shred" from="Knight" to="BossCore" method="_on_tank_character_toggle_shred"]
+[connection signal="timeout" from="Knight/ShredTimer" to="Knight" method="_on_shred_timer_timeout"]
+[connection signal="bleed_boss" from="Rogue" to="BossCore" method="_on_dps_character_1_bleed_boss"]
+[connection signal="deal_damage" from="Rogue" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="timeout" from="Rogue/BleedTimer" to="Rogue" method="_on_bleed_timer_timeout"]
+[connection signal="deal_damage" from="Sharpshooter" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="timeout" from="Sharpshooter/DeadeyeTimer" to="Sharpshooter" method="_on_deadeye_timer_timeout"]
+[connection signal="deal_damage" from="Cleric" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="embolden_signal" from="Cleric" to="BossCore" method="_on_healer_character_toggle_embolden"]
+[connection signal="timeout" from="Cleric/EmboldenTimer" to="Cleric" method="_on_embolden_timer_timeout"]
+[connection signal="pressed" from="UI/TankUpgade" to="Knight" method="_on_tank_upgade_pressed"]
+[connection signal="pressed" from="UI/DPS1Upgrade" to="Rogue" method="_on_dps_1_upgrade_pressed"]
+[connection signal="pressed" from="UI/DPS2Upgrade" to="Sharpshooter" method="_on_dps_2_upgrade_pressed"]
+[connection signal="pressed" from="UI/HealerUpgrade" to="Cleric" method="_on_healer_upgrade_pressed"]

@@ -29,4 +29,4 @@ func _on_deadeye_timer_timeout():
 
 
 func _on_dps_2_upgrade_pressed():
-	attack_damage_mult += .8
+	upgrade()

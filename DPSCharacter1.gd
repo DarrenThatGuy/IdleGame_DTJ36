@@ -28,4 +28,4 @@ func _on_bleed_timer_timeout():
 
 
 func _on_dps_1_upgrade_pressed():
-	attack_damage_mult += .6
+	upgrade()

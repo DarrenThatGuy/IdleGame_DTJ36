@@ -27,16 +27,16 @@ func level_up():
 
 
 func _on_regen_timer_timeout():
-	if health < max_health:
-		if health + regen_amount > max_health:
-			health = max_health
-		else:	
-			health += regen_amount
+	if health + regen_amount >= max_health:
+		health = max_health
+	else:	
+		health += regen_amount
 
 
 func _on_base_character_deal_damage(damage):
-	health -= damage * defense_value
 	get_exp.emit(damage)
+	health -= damage * defense_value
+		
 	
 
 

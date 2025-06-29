@@ -29,5 +29,5 @@ func _on_shred_timer_timeout():
 
 
 func _on_tank_upgade_pressed():
-	attack_damage_mult += .5
-	print(attack_damage_mult)
+	
+	upgrade()

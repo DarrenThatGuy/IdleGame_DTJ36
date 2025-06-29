@@ -16,6 +16,9 @@ func _ready():
 func _process(delta):
 	pass
 
+func upgrade():
+	super()
+
 func attack():
 	super()
 	
@@ -31,4 +34,4 @@ func _on_embolden_timer_timeout():
 
 
 func _on_healer_upgrade_pressed():
-	attack_damage_mult += .6
+	upgrade()
