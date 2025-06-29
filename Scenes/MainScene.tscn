@@ -25,6 +25,8 @@ shred_active = false
 shread_timer = NodePath("ShredTimer")
 shred_time = 1.0
 shred_amount = 1.05
+shred_upgrade_number = 0
+shred_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 6.0
 attack_damage_mult = 1.5
@@ -40,6 +42,8 @@ bleed_active = false
 bleed_timer = NodePath("BleedTimer")
 bleed_time = 20.0
 bleed_amount = 0.995
+bleed_upgrade_number = 0
+bleed_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 6.0
 attack_damage_mult = 3.5
@@ -53,8 +57,10 @@ wait_time = 20.0
 script = ExtResource("6_rsgky")
 deadeye_active = false
 deadeye_timer = NodePath("DeadeyeTimer")
-deadeye_cooldown = 20.0
+deadeye_cooldown = 60.0
 deadeye_duration = 1.0
+deadeye_upgrade_number = 0
+deadeye_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 6.0
 attack_damage_mult = 2.5
@@ -70,6 +76,8 @@ embolden_active = false
 embolden_timer = NodePath("EmboldenTimer")
 embolden_time = 1.0
 embolden_amount = 0.05
+embolden_upgrade_number = 0
+embolden_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 3.0
 attack_damage_mult = 1.7
@@ -118,6 +126,15 @@ Tank"
 script = ExtResource("10_hscyl")
 character_to_upgrade = NodePath("../../Knight")
 
+[node name="TankAbility" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 992.0
+offset_top = 64.0
+offset_right = 1086.0
+offset_bottom = 150.0
+text = "Upgrade
+Tank"
+
 [node name="DPS1Upgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
 offset_left = 40.0
@@ -128,6 +145,15 @@ text = "Upgrade
 DPS1"
 script = ExtResource("10_hscyl")
 character_to_upgrade = NodePath("../../Rogue")
+
+[node name="DPS1Ability" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 992.0
+offset_top = 160.0
+offset_right = 1086.0
+offset_bottom = 246.0
+text = "Upgrade
+DPS1"
 
 [node name="DPS2Upgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
@@ -140,6 +166,15 @@ DPS2"
 script = ExtResource("10_hscyl")
 character_to_upgrade = NodePath("../../Sharpshooter")
 
+[node name="DPS2Ability" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 992.0
+offset_top = 256.0
+offset_right = 1086.0
+offset_bottom = 342.0
+text = "Upgrade
+DPS2"
+
 [node name="HealerUpgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
 offset_left = 40.0
@@ -150,6 +185,15 @@ text = "Upgrade
 Healer"
 script = ExtResource("10_hscyl")
 character_to_upgrade = NodePath("../../Cleric")
+
+[node name="HealerAbility" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 992.0
+offset_top = 352.0
+offset_right = 1086.0
+offset_bottom = 438.0
+text = "Upgrade
+Healer"
 
 [node name="EXPAmount" type="Label" parent="UI"]
 layout_mode = 0
@@ -170,6 +214,10 @@ script = ExtResource("10_06ukv")
 [connection signal="embolden_signal" from="Cleric" to="BossCore" method="_on_healer_character_toggle_embolden"]
 [connection signal="timeout" from="Cleric/EmboldenTimer" to="Cleric" method="_on_embolden_timer_timeout"]
 [connection signal="pressed" from="UI/TankUpgade" to="Knight" method="_on_tank_upgade_pressed"]
+[connection signal="pressed" from="UI/TankAbility" to="Knight" method="_on_tank_ability_pressed"]
 [connection signal="pressed" from="UI/DPS1Upgrade" to="Rogue" method="_on_dps_1_upgrade_pressed"]
+[connection signal="button_down" from="UI/DPS1Ability" to="Rogue" method="_on_dps1_ability_pressed"]
 [connection signal="pressed" from="UI/DPS2Upgrade" to="Sharpshooter" method="_on_dps_2_upgrade_pressed"]
+[connection signal="pressed" from="UI/DPS2Ability" to="Sharpshooter" method="_on_dps2_ability_pressed"]
 [connection signal="pressed" from="UI/HealerUpgrade" to="Cleric" method="_on_healer_upgrade_pressed"]
+[connection signal="pressed" from="UI/HealerAbility" to="Cleric" method="_on_healer_ability_pressed"]

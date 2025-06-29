@@ -4,6 +4,8 @@ class_name DPSCharacter1 extends Character
 @export var bleed_timer : Timer
 @export var bleed_time : float = 20
 @export var bleed_amount : float = .995
+@export var bleed_upgrade_number : int = 0
+@export var bleed_upgrade_cost : int = 100
 
 signal bleed_boss(bleed_multiplier)
 
@@ -29,3 +31,21 @@ func _on_bleed_timer_timeout():
 
 func _on_dps_1_upgrade_pressed():
 	upgrade()
+
+func bleed_upgrade():
+	if bleed_upgrade_number == 0:
+		bleed_active = true
+		bleed_timer.start()
+	else:
+		bleed_amount -= .05
+		bleed_time -= 1
+	bleed_upgrade_number += 1
+
+
+func _on_dps1_ability_pressed():
+	if  bleed_upgrade_cost > game_head.exp:
+		print("EXP too Low")
+	else:
+		game_head.exp -= bleed_upgrade_cost
+		bleed_upgrade()
+		bleed_upgrade_cost *= 3.5
