@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_12"
+type="Resource"
+uid="uid://dj0pmymjqrmo"
+path="res://.godot/imported/asdf.dialogue-2e8e2069b9e58c11fea7e66004e9a539.tres"
+
+[deps]
+
+source_file="res://asdf.dialogue"
+dest_files=["res://.godot/imported/asdf.dialogue-2e8e2069b9e58c11fea7e66004e9a539.tres"]
+
+[params]
+
+defaults=true

@@ -5,7 +5,7 @@ class_name DPSCharacter1 extends Character
 @export var bleed_time : float = 20
 @export var bleed_amount : float = .995
 @export var bleed_upgrade_number : int = 0
-@export var bleed_upgrade_cost : int = 100
+@export var ability_upgrade_cost : int = 100
 
 signal bleed_boss(bleed_multiplier)
 
@@ -43,9 +43,9 @@ func bleed_upgrade():
 
 
 func _on_dps1_ability_pressed():
-	if  bleed_upgrade_cost > game_head.exp:
+	if  ability_upgrade_cost > game_head.exp:
 		print("EXP too Low")
 	else:
-		game_head.exp -= bleed_upgrade_cost
+		game_head.exp -= ability_upgrade_cost
 		bleed_upgrade()
-		bleed_upgrade_cost *= 3.5
+		ability_upgrade_cost *= 3.5

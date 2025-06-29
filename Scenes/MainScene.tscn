@@ -1,32 +1,72 @@
-[gd_scene load_steps=12 format=3 uid="uid://dj7n61gu11lso"]
+[gd_scene load_steps=25 format=3 uid="uid://dj7n61gu11lso"]
 
 [ext_resource type="Script" path="res://Scenes/MainScene.gd" id="1_4ddmm"]
 [ext_resource type="PackedScene" uid="uid://dk2poboa0py2e" path="res://Scenes/boss_core.tscn" id="1_thtli"]
 [ext_resource type="PackedScene" uid="uid://b6nparti4auej" path="res://base_character.tscn" id="2_2hb0m"]
+[ext_resource type="Texture2D" uid="uid://s4c6nywo78v7" path="res://background.png" id="2_lhgd4"]
 [ext_resource type="Script" path="res://Scenes/TankCore.gd" id="2_oclct"]
 [ext_resource type="Script" path="res://Scenes/BossHealthBar.gd" id="3_wgmwa"]
-[ext_resource type="Script" path="res://Scenes/BossHealthLabel.gd" id="4_mdpm6"]
+[ext_resource type="Texture2D" uid="uid://bnlrs31eea0wc" path="res://boss-arm.png" id="4_10mo5"]
+[ext_resource type="Texture2D" uid="uid://dooolpsm8a1nj" path="res://boss-head.png" id="5_36vfu"]
 [ext_resource type="Script" path="res://DPSCharacter1.gd" id="5_m2ijw"]
 [ext_resource type="Script" path="res://DPSCharacter2.gd" id="6_rsgky"]
 [ext_resource type="Script" path="res://HealerCharacter.gd" id="7_wgiaj"]
+[ext_resource type="Texture2D" uid="uid://cy52mxpy61bjv" path="res://tank.png" id="8_fdgww"]
 [ext_resource type="Script" path="res://Scenes/EXPAmount.gd" id="10_06ukv"]
 [ext_resource type="Script" path="res://Scenes/DamageUpgradeButton.gd" id="10_hscyl"]
+[ext_resource type="Texture2D" uid="uid://b0vbar7ithm0b" path="res://monk.png" id="10_uaoua"]
+[ext_resource type="Texture2D" uid="uid://ctw581majp0si" path="res://boss-health-bar (1).png" id="11_sox1c"]
+[ext_resource type="Script" path="res://Scenes/DamageUpgradeLabel.gd" id="11_wocxm"]
+[ext_resource type="Texture2D" uid="uid://wvkomsfw0wmk" path="res://mage.png" id="12_tllwi"]
+[ext_resource type="Texture2D" uid="uid://csueluxuo4x77" path="res://healer.png" id="14_bq6c1"]
+[ext_resource type="Script" path="res://Scenes/PhaseLabel.gd" id="17_7iplp"]
+[ext_resource type="Script" path="res://Scenes/TankAbilityLabel.gd" id="19_k8kd5"]
+[ext_resource type="Script" path="res://Scenes/TankAbility.gd" id="20_1sofb"]
+[ext_resource type="AudioStream" uid="uid://7oqjr52855ss" path="res://Music_OrchestralTrack.wav" id="22_peau8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewg4s"]
+bg_color = Color(1, 0, 0, 1)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_4ddmm")
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -3
+position = Vector2(575.629, 324)
+scale = Vector2(0.600387, 0.6)
+texture = ExtResource("2_lhgd4")
 
 [node name="BossCore" parent="." instance=ExtResource("1_thtli")]
 regen_amount = 200.0
 regen_speed = 2.0
 
+[node name="Sprite2D" type="Sprite2D" parent="BossCore"]
+z_index = -1
+position = Vector2(-323, 182)
+texture = ExtResource("4_10mo5")
+
+[node name="Sprite2D3" type="Sprite2D" parent="BossCore"]
+z_index = -1
+position = Vector2(301, 206)
+scale = Vector2(-1, 1)
+texture = ExtResource("4_10mo5")
+
+[node name="Sprite2D2" type="Sprite2D" parent="BossCore"]
+z_index = -1
+position = Vector2(0, 94)
+scale = Vector2(0.554888, 0.597417)
+texture = ExtResource("5_36vfu")
+
 [node name="Knight" parent="." node_paths=PackedStringArray("shread_timer", "game_head") instance=ExtResource("2_2hb0m")]
+position = Vector2(304, 496)
+scale = Vector2(0.5, 0.5)
 script = ExtResource("2_oclct")
 shred_active = false
 shread_timer = NodePath("ShredTimer")
 shred_time = 1.0
 shred_amount = 1.05
 shred_upgrade_number = 0
-shred_upgrade_cost = 100
+ability_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 6.0
 attack_damage_mult = 1.5
@@ -36,48 +76,63 @@ attack_speed = 1.0
 [node name="ShredTimer" type="Timer" parent="Knight"]
 wait_time = 10.0
 
-[node name="Rogue" parent="." node_paths=PackedStringArray("bleed_timer", "game_head") instance=ExtResource("2_2hb0m")]
+[node name="KnightSprite" type="Sprite2D" parent="Knight"]
+texture = ExtResource("8_fdgww")
+
+[node name="Monk" parent="." node_paths=PackedStringArray("bleed_timer", "game_head") instance=ExtResource("2_2hb0m")]
+position = Vector2(800, 360)
+scale = Vector2(0.95, 0.95)
 script = ExtResource("5_m2ijw")
 bleed_active = false
 bleed_timer = NodePath("BleedTimer")
 bleed_time = 20.0
 bleed_amount = 0.995
 bleed_upgrade_number = 0
-bleed_upgrade_cost = 100
+ability_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 6.0
 attack_damage_mult = 3.5
 multiplier_upgrade = 0.6
 attack_speed = 0.7
 
-[node name="BleedTimer" type="Timer" parent="Rogue"]
+[node name="BleedTimer" type="Timer" parent="Monk"]
 wait_time = 20.0
 
-[node name="Sharpshooter" parent="." node_paths=PackedStringArray("deadeye_timer", "game_head") instance=ExtResource("2_2hb0m")]
+[node name="MonkSprite" type="Sprite2D" parent="Monk"]
+texture = ExtResource("10_uaoua")
+
+[node name="Wizard" parent="." node_paths=PackedStringArray("deadeye_timer", "game_head") instance=ExtResource("2_2hb0m")]
+position = Vector2(400, 464)
+scale = Vector2(0.6, 0.6)
 script = ExtResource("6_rsgky")
 deadeye_active = false
 deadeye_timer = NodePath("DeadeyeTimer")
 deadeye_cooldown = 60.0
 deadeye_duration = 1.0
 deadeye_upgrade_number = 0
-deadeye_upgrade_cost = 100
+ability_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 6.0
 attack_damage_mult = 2.5
 multiplier_upgrade = 0.8
 attack_speed = 0.8
 
-[node name="DeadeyeTimer" type="Timer" parent="Sharpshooter"]
+[node name="DeadeyeTimer" type="Timer" parent="Wizard"]
 wait_time = 20.0
 
+[node name="WizardSprite" type="Sprite2D" parent="Wizard"]
+texture = ExtResource("12_tllwi")
+
 [node name="Cleric" parent="." node_paths=PackedStringArray("embolden_timer", "game_head") instance=ExtResource("2_2hb0m")]
+position = Vector2(624, 448)
+scale = Vector2(0.65, 0.65)
 script = ExtResource("7_wgiaj")
 embolden_active = false
 embolden_timer = NodePath("EmboldenTimer")
 embolden_time = 1.0
 embolden_amount = 0.05
 embolden_upgrade_number = 0
-embolden_upgrade_cost = 100
+ability_upgrade_cost = 100
 game_head = NodePath("..")
 attack_damage = 3.0
 attack_damage_mult = 1.7
@@ -87,33 +142,44 @@ attack_speed = 0.9
 [node name="EmboldenTimer" type="Timer" parent="Cleric"]
 wait_time = 10.0
 
+[node name="ClericSprite" type="Sprite2D" parent="Cleric"]
+texture = ExtResource("14_bq6c1")
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 
-[node name="BossHealthBar" type="ProgressBar" parent="UI" node_paths=PackedStringArray("BossNode")]
-layout_mode = 1
+[node name="Sprite2D" type="Sprite2D" parent="UI"]
+position = Vector2(563, 32)
+scale = Vector2(1.17024, 0.872349)
+texture = ExtResource("11_sox1c")
+
+[node name="BossHealthBar" type="ProgressBar" parent="UI/Sprite2D" node_paths=PackedStringArray("BossNode")]
+process_mode = 1
+z_index = -1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 27.0
+offset_left = -406.0
+offset_top = -9.0
+offset_right = -621.0
+offset_bottom = 22.0
 grow_horizontal = 2
+scale = Vector2(1.17024, 0.872349)
+theme_override_styles/fill = SubResource("StyleBoxFlat_ewg4s")
 show_percentage = false
 script = ExtResource("3_wgmwa")
-BossNode = NodePath("../../BossCore")
-
-[node name="Label" type="Label" parent="UI/BossHealthBar" node_paths=PackedStringArray("BossNode")]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
-grow_horizontal = 2
-script = ExtResource("4_mdpm6")
 BossNode = NodePath("../../../BossCore")
+
+[node name="Label" type="Label" parent="UI/Sprite2D"]
+offset_left = -170.051
+offset_top = -36.6826
+offset_right = -130.051
+offset_bottom = -13.6826
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("17_7iplp")
 
 [node name="TankUpgade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
@@ -122,18 +188,45 @@ offset_top = 64.0
 offset_right = 134.0
 offset_bottom = 150.0
 text = "Upgrade
-Tank"
+Knight"
 script = ExtResource("10_hscyl")
 character_to_upgrade = NodePath("../../Knight")
 
-[node name="TankAbility" type="Button" parent="UI"]
+[node name="TankUpgradeLabel" type="Label" parent="UI/TankUpgade" node_paths=PackedStringArray("character_to_label")]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.426
+anchor_bottom = 0.267
+offset_right = 159.956
+offset_bottom = 0.0379982
+pivot_offset = Vector2(20, 12)
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 2
+script = ExtResource("11_wocxm")
+character_to_label = NodePath("../../../Knight")
+
+[node name="TankAbility" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 992.0
+offset_left = 912.0
 offset_top = 64.0
-offset_right = 1086.0
+offset_right = 1006.0
 offset_bottom = 150.0
 text = "Upgrade
-Tank"
+Knight
+Ability"
+script = ExtResource("20_1sofb")
+character_to_upgrade = NodePath("../../Knight")
+
+[node name="TankAbilityLabel" type="Label" parent="UI/TankAbility" node_paths=PackedStringArray("character_to_upgrade")]
+layout_mode = 0
+offset_left = -240.0
+offset_right = -4.0
+offset_bottom = 101.0
+text = "Allows the Knight to Shred the boss' Defenses, increasing the damage the boss takes. Upgrading Increases duration and power."
+autowrap_mode = 2
+script = ExtResource("19_k8kd5")
+character_to_upgrade = NodePath("../../../Knight")
 
 [node name="DPS1Upgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
@@ -142,18 +235,46 @@ offset_top = 160.0
 offset_right = 134.0
 offset_bottom = 246.0
 text = "Upgrade
-DPS1"
+Monk"
 script = ExtResource("10_hscyl")
-character_to_upgrade = NodePath("../../Rogue")
+character_to_upgrade = NodePath("../../Monk")
 
-[node name="DPS1Ability" type="Button" parent="UI"]
+[node name="DPSUpgradeLabel" type="Label" parent="UI/DPS1Upgrade" node_paths=PackedStringArray("character_to_label")]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.426
+anchor_bottom = 0.267
+offset_top = -96.0
+offset_right = 159.956
+offset_bottom = -95.962
+pivot_offset = Vector2(20, 12)
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 2
+script = ExtResource("11_wocxm")
+character_to_label = NodePath("../../../Monk")
+
+[node name="DPS1Ability" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 992.0
+offset_left = 912.0
 offset_top = 160.0
-offset_right = 1086.0
+offset_right = 1006.0
 offset_bottom = 246.0
 text = "Upgrade
-DPS1"
+Monk
+Ability"
+script = ExtResource("20_1sofb")
+character_to_upgrade = NodePath("../../Monk")
+
+[node name="DPSAbilityLabel" type="Label" parent="UI/DPS1Ability"]
+layout_mode = 0
+offset_left = -240.0
+offset_top = -96.0
+offset_right = -4.0
+offset_bottom = 5.0
+text = "Allows the Monk to strike with a powerful blow, dealing great damage to the boss. Upgrading Increases damage and reduces cooldown."
+autowrap_mode = 2
+script = ExtResource("19_k8kd5")
 
 [node name="DPS2Upgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
@@ -162,18 +283,47 @@ offset_top = 256.0
 offset_right = 134.0
 offset_bottom = 342.0
 text = "Upgrade
-DPS2"
+Wizard"
 script = ExtResource("10_hscyl")
-character_to_upgrade = NodePath("../../Sharpshooter")
+character_to_upgrade = NodePath("../../Wizard")
 
-[node name="DPS2Ability" type="Button" parent="UI"]
+[node name="DPS2UpgradeLabel" type="Label" parent="UI/DPS2Upgrade" node_paths=PackedStringArray("character_to_label")]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.426
+anchor_bottom = 0.267
+offset_top = -192.0
+offset_right = 159.956
+offset_bottom = -191.962
+pivot_offset = Vector2(20, 12)
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 2
+script = ExtResource("11_wocxm")
+character_to_label = NodePath("../../../Wizard")
+
+[node name="DPS2Ability" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 992.0
+offset_left = 912.0
 offset_top = 256.0
-offset_right = 1086.0
+offset_right = 1006.0
 offset_bottom = 342.0
 text = "Upgrade
-DPS2"
+Wizard
+Ability"
+script = ExtResource("20_1sofb")
+character_to_upgrade = NodePath("../../Wizard")
+
+[node name="DPS2AbilityLabel" type="Label" parent="UI/DPS2Ability" node_paths=PackedStringArray("character_to_upgrade")]
+layout_mode = 0
+offset_left = -240.0
+offset_top = -192.0
+offset_right = -4.0
+offset_bottom = -91.0
+text = "Allows the Mage to channel their arcane power, doubling their damage for a period of time. Upgrading Increases duration and reduces cooldown."
+autowrap_mode = 2
+script = ExtResource("19_k8kd5")
+character_to_upgrade = NodePath("../../../Wizard")
 
 [node name="HealerUpgrade" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
@@ -182,42 +332,96 @@ offset_top = 352.0
 offset_right = 134.0
 offset_bottom = 438.0
 text = "Upgrade
-Healer"
+Cleric"
 script = ExtResource("10_hscyl")
 character_to_upgrade = NodePath("../../Cleric")
 
-[node name="HealerAbility" type="Button" parent="UI"]
+[node name="HealerUpgradeLabel" type="Label" parent="UI/HealerUpgrade" node_paths=PackedStringArray("character_to_label")]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.426
+anchor_bottom = 0.267
+offset_right = 159.956
+offset_bottom = 0.0379982
+pivot_offset = Vector2(20, 12)
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 2
+script = ExtResource("11_wocxm")
+character_to_label = NodePath("../../../Cleric")
+
+[node name="HealerAbility" type="Button" parent="UI" node_paths=PackedStringArray("character_to_upgrade")]
 layout_mode = 0
-offset_left = 992.0
+offset_left = 912.0
 offset_top = 352.0
-offset_right = 1086.0
+offset_right = 1006.0
 offset_bottom = 438.0
 text = "Upgrade
-Healer"
+Cleric
+Ability"
+script = ExtResource("20_1sofb")
+character_to_upgrade = NodePath("../../Cleric")
+
+[node name="HealerAbilityLabel" type="Label" parent="UI/HealerAbility" node_paths=PackedStringArray("character_to_upgrade")]
+layout_mode = 0
+offset_left = -240.0
+offset_top = -288.0
+offset_right = -4.0
+offset_bottom = -187.0
+text = "Allows the Cleric to power up the party, increasing the damage delt by the party. Upgrading Increases duration and power."
+autowrap_mode = 2
+script = ExtResource("19_k8kd5")
+character_to_upgrade = NodePath("../../../Cleric")
 
 [node name="EXPAmount" type="Label" parent="UI"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 504.0
+offset_top = 48.0
+offset_right = 544.0
+offset_bottom = 71.0
 script = ExtResource("10_06ukv")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_peau8")
+volume_db = -15.0
+autoplay = true
+
+[connection signal="game_over" from="." to="UI/Sprite2D/Label" method="_on_node_2d_game_over"]
+[connection signal="boss_defeated" from="BossCore" to="." method="_on_boss_core_boss_defeated"]
+[connection signal="boss_defeated" from="BossCore" to="UI/Sprite2D/Label" method="_on_boss_core_boss_defeated"]
 [connection signal="get_exp" from="BossCore" to="." method="_on_boss_core_get_exp"]
 [connection signal="deal_damage" from="Knight" to="BossCore" method="_on_base_character_deal_damage"]
 [connection signal="toggle_shred" from="Knight" to="BossCore" method="_on_tank_character_toggle_shred"]
 [connection signal="timeout" from="Knight/ShredTimer" to="Knight" method="_on_shred_timer_timeout"]
-[connection signal="bleed_boss" from="Rogue" to="BossCore" method="_on_dps_character_1_bleed_boss"]
-[connection signal="deal_damage" from="Rogue" to="BossCore" method="_on_base_character_deal_damage"]
-[connection signal="timeout" from="Rogue/BleedTimer" to="Rogue" method="_on_bleed_timer_timeout"]
-[connection signal="deal_damage" from="Sharpshooter" to="BossCore" method="_on_base_character_deal_damage"]
-[connection signal="timeout" from="Sharpshooter/DeadeyeTimer" to="Sharpshooter" method="_on_deadeye_timer_timeout"]
+[connection signal="bleed_boss" from="Monk" to="BossCore" method="_on_dps_character_1_bleed_boss"]
+[connection signal="deal_damage" from="Monk" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="timeout" from="Monk/BleedTimer" to="Monk" method="_on_bleed_timer_timeout"]
+[connection signal="deal_damage" from="Wizard" to="BossCore" method="_on_base_character_deal_damage"]
+[connection signal="timeout" from="Wizard/DeadeyeTimer" to="Wizard" method="_on_deadeye_timer_timeout"]
 [connection signal="deal_damage" from="Cleric" to="BossCore" method="_on_base_character_deal_damage"]
 [connection signal="embolden_signal" from="Cleric" to="BossCore" method="_on_healer_character_toggle_embolden"]
 [connection signal="timeout" from="Cleric/EmboldenTimer" to="Cleric" method="_on_embolden_timer_timeout"]
+[connection signal="mouse_entered" from="UI/TankUpgade" to="UI/TankUpgade/TankUpgradeLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/TankUpgade" to="UI/TankUpgade/TankUpgradeLabel" method="_on_upgrade_button_mouse_exited"]
 [connection signal="pressed" from="UI/TankUpgade" to="Knight" method="_on_tank_upgade_pressed"]
+[connection signal="mouse_entered" from="UI/TankAbility" to="UI/TankAbility/TankAbilityLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/TankAbility" to="UI/TankAbility/TankAbilityLabel" method="_on_upgrade_button_mouse_exited"]
 [connection signal="pressed" from="UI/TankAbility" to="Knight" method="_on_tank_ability_pressed"]
-[connection signal="pressed" from="UI/DPS1Upgrade" to="Rogue" method="_on_dps_1_upgrade_pressed"]
-[connection signal="button_down" from="UI/DPS1Ability" to="Rogue" method="_on_dps1_ability_pressed"]
-[connection signal="pressed" from="UI/DPS2Upgrade" to="Sharpshooter" method="_on_dps_2_upgrade_pressed"]
-[connection signal="pressed" from="UI/DPS2Ability" to="Sharpshooter" method="_on_dps2_ability_pressed"]
+[connection signal="mouse_entered" from="UI/DPS1Upgrade" to="UI/DPS1Upgrade/DPSUpgradeLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/DPS1Upgrade" to="UI/DPS1Upgrade/DPSUpgradeLabel" method="_on_upgrade_button_mouse_exited"]
+[connection signal="pressed" from="UI/DPS1Upgrade" to="Monk" method="_on_dps_1_upgrade_pressed"]
+[connection signal="button_down" from="UI/DPS1Ability" to="Monk" method="_on_dps1_ability_pressed"]
+[connection signal="mouse_entered" from="UI/DPS1Ability" to="UI/DPS1Ability/DPSAbilityLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/DPS1Ability" to="UI/DPS1Ability/DPSAbilityLabel" method="_on_upgrade_button_mouse_exited"]
+[connection signal="mouse_entered" from="UI/DPS2Upgrade" to="UI/DPS2Upgrade/DPS2UpgradeLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/DPS2Upgrade" to="UI/DPS2Upgrade/DPS2UpgradeLabel" method="_on_upgrade_button_mouse_exited"]
+[connection signal="pressed" from="UI/DPS2Upgrade" to="Wizard" method="_on_dps_2_upgrade_pressed"]
+[connection signal="mouse_entered" from="UI/DPS2Ability" to="UI/DPS2Ability/DPS2AbilityLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/DPS2Ability" to="UI/DPS2Ability/DPS2AbilityLabel" method="_on_upgrade_button_mouse_exited"]
+[connection signal="pressed" from="UI/DPS2Ability" to="Wizard" method="_on_dps2_ability_pressed"]
+[connection signal="mouse_entered" from="UI/HealerUpgrade" to="UI/HealerUpgrade/HealerUpgradeLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/HealerUpgrade" to="UI/HealerUpgrade/HealerUpgradeLabel" method="_on_upgrade_button_mouse_exited"]
 [connection signal="pressed" from="UI/HealerUpgrade" to="Cleric" method="_on_healer_upgrade_pressed"]
+[connection signal="mouse_entered" from="UI/HealerAbility" to="UI/HealerAbility/HealerAbilityLabel" method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="UI/HealerAbility" to="UI/HealerAbility/HealerAbilityLabel" method="_on_upgrade_button_mouse_exited"]
 [connection signal="pressed" from="UI/HealerAbility" to="Cleric" method="_on_healer_ability_pressed"]

@@ -9,6 +9,7 @@ var health: float
 @export var regen_timer: Timer
 
 signal get_exp(amount)
+signal boss_defeated()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	health = max_health
@@ -18,7 +19,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if health <= 0:
-		level_up()
+		boss_health_reduced()
+
+func boss_health_reduced():
+	boss_defeated.emit()
+	level_up()
 
 func level_up():
 	max_health *= 2

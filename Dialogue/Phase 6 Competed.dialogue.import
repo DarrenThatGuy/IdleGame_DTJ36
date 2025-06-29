@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_12"
+type="Resource"
+uid="uid://djejxnofmoqr4"
+path="res://.godot/imported/Phase 6 Competed.dialogue-a706e8fdab1b5bcb72d10a5ef08c9116.tres"
+
+[deps]
+
+source_file="res://Dialogue/Phase 6 Competed.dialogue"
+dest_files=["res://.godot/imported/Phase 6 Competed.dialogue-a706e8fdab1b5bcb72d10a5ef08c9116.tres"]
+
+[params]
+
+defaults=true

@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_12"
+type="Resource"
+uid="uid://j4x6dy0i828b"
+path="res://.godot/imported/Phase 5 Completed.dialogue-606cf69d93eea737c841ae308f851922.tres"
+
+[deps]
+
+source_file="res://Dialogue/Phase 5 Completed.dialogue"
+dest_files=["res://.godot/imported/Phase 5 Completed.dialogue-606cf69d93eea737c841ae308f851922.tres"]
+
+[params]
+
+defaults=true

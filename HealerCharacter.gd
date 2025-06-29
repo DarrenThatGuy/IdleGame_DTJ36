@@ -5,7 +5,7 @@ class_name HealerCharacter extends Character
 @export var embolden_time : float = 1
 @export var embolden_amount : float = 1.05
 @export var embolden_upgrade_number : int = 0
-@export var embolden_upgrade_cost : int = 100
+@export var ability_upgrade_cost : int = 100
 
 
 signal embolden_signal(embolden_time, embolden_amount)
@@ -50,9 +50,9 @@ func embolden_upgrade():
 
 
 func _on_healer_ability_pressed():
-	if  embolden_upgrade_cost > game_head.exp:
+	if  ability_upgrade_cost > game_head.exp:
 		print("EXP too Low")
 	else:
-		game_head.exp -= embolden_upgrade_cost
+		game_head.exp -= ability_upgrade_cost
 		embolden_upgrade()
-		embolden_upgrade_cost *= 3.5
+		ability_upgrade_cost *= 3.5
